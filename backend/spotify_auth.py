@@ -6,11 +6,11 @@ class SpotifyAuth(object):
     def __init__(self):
         return None
 
-    def get_access_token(self):
+    def get_access_token(self, spotify_code):
         payload = {
             "grant_type": "authorization_code",
-            "code": config('SPOTIFY_CODE'),
-            "redirect_uri": "http://127.0.0.1"
+            "code": spotify_code,
+            "redirect_uri": config('SPOTIFY_REDIRECT_URL')
         }
         authorization_string = config('SPOTIFY_CLIENT_ID') + ':' + config('SPOTIFY_CLIENT_SECRET')
         headers = {

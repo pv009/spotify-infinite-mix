@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "@types/node": "^18.11.18",
+    "dotenv": "^16.0.3",
+    "vuex-module-decorators": "^2.0.0"
+  }
+}
