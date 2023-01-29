@@ -5,7 +5,7 @@ import base64
 class SpotifyAuth(object):
     def __init__(self):
         self.authorization_string = config('SPOTIFY_CLIENT_ID') + ':' + config('SPOTIFY_CLIENT_SECRET')
-        self.headers = headers = {
+        self.headers = {
             "Authorization": "Basic %s" % (base64.b64encode(self.authorization_string.encode('utf-8')).decode('utf-8')),
             "Content-Type": "application/x-www-form-urlencoded"
         }

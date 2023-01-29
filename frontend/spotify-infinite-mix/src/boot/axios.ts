@@ -8,6 +8,7 @@ declare module '@vue/runtime-core' {
 }
 
 const spotifyAuthApi = axios.create({ baseURL: process.env.SPOTIFY_AUTH_BASE_URL });
+const spotifyApi = axios.create({ baseURL: process.env.SPOTIFY_API_BASE_URL });
 const api = axios.create({ baseURL: process.env.API_BASE_URL });
 
 export default boot(({ app }) => {
@@ -16,4 +17,4 @@ export default boot(({ app }) => {
   app.config.globalProperties.$spotifyAuthApi = spotifyAuthApi;
 });
 
-export { api , spotifyAuthApi};
+export { api , spotifyAuthApi, spotifyApi};

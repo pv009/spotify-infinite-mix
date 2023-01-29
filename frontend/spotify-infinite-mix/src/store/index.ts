@@ -1,9 +1,11 @@
 import Vuex from 'vuex'
+import PlayerModule from './player';
 import SpotifyModule from './spotify'
 
 const store = new Vuex.Store({
   modules: {
-    spotify: SpotifyModule
+    spotify: SpotifyModule,
+    player: PlayerModule
   }
 });
 

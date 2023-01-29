@@ -1,24 +1,39 @@
 <template>
-  <q-page class="row items-center justify-evenly">
-    <h3>Authorizing...</h3>
+  <q-page class="index-page column items-center justify-evenly">
+    <div v-if="!authorized" class="column items-center justify-evenly">
+      <h3>Authorizing...</h3>
+      <q-circular-progress indeterminate reverse size="75px" :thickness="0.6" font-size="50px" color="light-blue"
+        center-color="grey-9" class="q-ma-md" />
+    </div>
+    <div class="mode-selection column items-center justify-center" v-else>
+      <h3>Choose your Mode:</h3>
+      <q-btn color="primary" icon="person" label="Personal" @click="setMode('private')" />
+      <q-btn color="primary" icon="celebration" label="Party" @click="setMode('party')" disabled />
+    </div>
   </q-page>
 </template>
 
 <script setup lang="ts">
 import SpotifyModule from '../store/spotify';
-import { onMounted } from 'vue';
-import { useRoute } from 'vue-router';
+import { App, onMounted, ref } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 import { getModule } from 'vuex-module-decorators';
 import store from '../store';
+import { Notify } from 'quasar';
+import PlayerModule from '../store/player';
+import { AppMode } from '../model/player.model';
 
 const $route = useRoute();
+const $router = useRouter();
 let spotifyStore: SpotifyModule;
+let playerStore: PlayerModule;
+let authorized = ref(false);
 
 onMounted(() => {
   initStores();
-  
+
   if (!$route.fullPath.includes('code=')) {
-    getSpotifyCode(); 
+    getSpotifyCode();
   } else {
     authorizeOnSpotify($route.fullPath);
   }
@@ -26,7 +41,7 @@ onMounted(() => {
 
 function initStores() {
   spotifyStore = getModule(SpotifyModule, store);
-  console.log(spotifyStore);
+  playerStore = getModule(PlayerModule, store);
 }
 
 function getSpotifyCode() {
@@ -59,6 +74,41 @@ function getSpotifyCode() {
 
 async function authorizeOnSpotify(routePath: string) {
   const code = routePath.split('code=')[1];
-  await spotifyStore.getSpotifyAccesToken(code);
+  try {
+    await spotifyStore.getSpotifyAccesToken(code);
+    Notify.create({
+      message: 'Authorized successfully',
+      type: 'positive'
+
+    });
+    authorized.value = true;
+  } catch (error) {
+    Notify.create({
+      message: 'Authorization on Spotify failed',
+      type: 'negative'
+    });
+  }
+}
+
+function setMode(mode: string) {
+  playerStore.setAppMode(mode as AppMode);
+  $router.push({
+    path: '/player'
+  })
 }
 </script>
+
+<style lang="scss" scoped>
+.index-page {
+  .mode-selection {
+    .q-btn {
+      width: 300px;
+      height: 50px;
+
+      &:first-of-type {
+        margin-bottom: 30px;
+      }
+    }
+  }
+}
+</style>

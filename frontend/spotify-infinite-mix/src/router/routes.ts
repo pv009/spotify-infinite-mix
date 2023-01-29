@@ -13,6 +13,10 @@ const routes: RouteRecordRaw[] = [
         path: 'start',
         component: () => import('pages/IndexPage.vue'),
       },
+      {
+        path: 'player',
+        component: () => import('src/pages/PlayerPage.vue'),
+      },
     ]
   },
   // Always leave this as last one,
