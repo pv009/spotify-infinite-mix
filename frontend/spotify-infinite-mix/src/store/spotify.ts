@@ -23,9 +23,7 @@ export default class SpotifyModule extends VuexModule {
     private setSpotifyAccessToken(token: string) {
         if (this.auth) {
             this.auth.access_token = token;
-            api.interceptors.request.use(config => {
-                config.headers.spotify_access = token;
-            });
+            Object.assign(api.defaults, {headers: {spotify_access: token}});
         }
     }
 

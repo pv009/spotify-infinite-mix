@@ -3,6 +3,7 @@ import string
 from fastapi import FastAPI, Header, Request
 from fastapi.middleware.cors import CORSMiddleware
 
+from model.song_data import SongData
 from services.train import TrainAlgo
 from services.spotify_api import SpotifyApiConnect
 from services.spotify_auth import SpotifyAuth
@@ -45,7 +46,7 @@ def get_song_metadata(id, request: Request):
     return spotify_api.get_song_metadata(song_id=id)
 
 @app.post('/data/song-data/')
-def save_song_data(data):
+def save_song_data(data: SongData):
     print(data)
     train = TrainAlgo()
     train.save_listening_data(data)
