@@ -15,8 +15,8 @@ class SpotifyApiConnect(object):
     def get_random_songs(self, n_songs=1):
         random_char = random.choice(string.ascii_letters)
         search_strings = [random_char + '%', '%' + random_char + '%']
-        random_search = random.choice(search_strings)
         random_offset = random.randrange(0, 1000)
+        random_search = random.choice(search_strings)
 
         params = {
             "type": "track",
@@ -41,7 +41,6 @@ class SpotifyApiConnect(object):
             requests.post(url, headers=self.headers)
 
     def get_song_metadata(self, song_id):
-        print(song_id)
         url = ("%s/audio-features/%s" % (config('SPOTIFY_API_BASE_URL'), song_id))
         request = requests.get(url, headers=self.headers)
         return request.json()
